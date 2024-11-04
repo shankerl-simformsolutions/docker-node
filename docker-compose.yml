@@ -1,0 +1,41 @@
+version: "3.0"
+services:
+  db:
+    image: postgres
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U joe -d my-node-app"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: 'my-node-app'
+      POSTGRES_USER: 'joe'
+      POSTGRES_PASSWORD: '12345678'
+    ports:
+      - 5435:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Mount volume to persist data
+    networks:
+        - my_network
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 3001:3001
+    environment:
+      DB_HOST: host.docker.internal
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+    driver: local  # Use the default local driver
+networks:
+  my_network:
+    external: true
