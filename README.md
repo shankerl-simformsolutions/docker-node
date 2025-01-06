@@ -1,9 +1,11 @@
-# docker-node
+# Deploy Nodejs project using Docker
 
-# use command 
-docker-compose up to run the application using docker
+## After successfully connecting github to remote server follow this commands
 
-# routes
+# use following command to run the docker compose 
+docker-compose up
+
+# Following the routes are used to connect postgres db and perform actions on DB
 
 # set up (http://localhost:3001/api/setup) (GET)
 Set up the table for the user creation and perform CRUD on user
